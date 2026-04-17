@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedTros.App;
 
@@ -10,86 +11,53 @@ public class GildedTros
         this.Items = Items;
     }
     
-    // the above can be simplified to a primary constructor like public class GildedTros(IList<Item> items)
+    // the above can be simplified to a primary constructor like "public class GildedTros(IList<Item> items)"
     // but I'm keeping it like this for the requirements
+
+    private readonly string[] _smellyItems = ["Duplicate Code", "Long Methods", "Ugly Variable Names"];
     
     public void UpdateQuality()
     {
         foreach (var item in Items)
         {
-            if (item.Name != "Good Wine" 
-                && item.Name != "Backstage passes for Re:factor"
-                && item.Name != "Backstage passes for HAXX")
-            {
-                if (item.Quality > 0)
-                {
-                    if (item.Name != "B-DAWG Keychain")
-                    {
-                        item.Quality = item.Quality - 1;
-                    }
-                }
-            }
-            else
-            {
-                if (item.Quality < 50)
-                {
-                    item.Quality = item.Quality + 1;
+            if (item.Name != "B-DAWG Keychain") item.SellIn--;
 
-                    if (item.Name == "Backstage passes for Re:factor"
-                        || item.Name == "Backstage passes for HAXX")
-                    {
-                        if (item.SellIn < 11)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
-
-                        if (item.SellIn < 6)
-                        {
-                            if (item.Quality < 50)
-                            {
-                                item.Quality = item.Quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (item.Name != "B-DAWG Keychain")
+            // increase or decrease
+            item.Quality = item.Name switch
             {
-                item.SellIn = item.SellIn - 1;
-            }
-
-            if (item.SellIn < 0)
+                "Good Wine" => item.Quality + 1,
+                
+                var s when s.StartsWith("Backstage passes") => item.SellIn switch
+                {
+                    <= 0 => 0,
+                    <= 5 => item.Quality + 3,
+                    <= 10 => item.Quality + 2,
+                    _ => item.Quality + 1
+                },
+                
+                var s when _smellyItems.Contains(item.Name) => item.SellIn switch
+                {
+                    < 0 => item.Quality - 4,
+                    _ => item.Quality - 2
+                },
+                
+                _ => item.SellIn switch
+                {
+                    < 0 => item.Quality - 2,
+                    _ => item.Quality - 1
+                }
+            };
+            
+            // set the limits
+            item.Quality = item.Quality switch
             {
-                if (item.Name != "Good Wine")
-                {
-                    if (item.Name != "Backstage passes for Re:factor"
-                        && item.Name != "Backstage passes for HAXX")
-                    {
-                        if (item.Quality > 0)
-                        {
-                            if (item.Name != "B-DAWG Keychain")
-                            {
-                                item.Quality = item.Quality - 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        item.Quality = item.Quality - item.Quality;
-                    }
-                }
-                else
-                {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-                    }
-                }
-            }
+                < 0 => 0,
+                > 50 => 50,
+                _ => item.Quality
+            };
+            
+            // legendary items always have quality 80
+            if (item.Name == "B-DAWG Keychain") item.Quality = 80;
         }
     }
 }
