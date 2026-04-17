@@ -5,22 +5,21 @@ using ApprovalTests;
 using ApprovalTests.Reporters;
 using Xunit;
 
-namespace GildedTros.App
+namespace GildedTros.App;
+
+[UseReporter(typeof(DiffReporter))]
+public class ApprovalTest
 {
-    [UseReporter(typeof(DiffReporter))]
-    public class ApprovalTest
+    [Fact]
+    public void ThirtyDays()
     {
-        [Fact]
-        public void ThirtyDays()
-        {
-            var fakeoutput = new StringBuilder();
-            Console.SetOut(new StringWriter(fakeoutput));
-            Console.SetIn(new StringReader("a\n"));
+        var fakeoutput = new StringBuilder();
+        Console.SetOut(new StringWriter(fakeoutput));
+        Console.SetIn(new StringReader("a\n"));
 
-            Program.Main(new string[] { });
-            var output = fakeoutput.ToString();
+        Program.Main([]);
+        var output = fakeoutput.ToString();
 
-            Approvals.Verify(output);
-        }
+        Approvals.Verify(output);
     }
 }
