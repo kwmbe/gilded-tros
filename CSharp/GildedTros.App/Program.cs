@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GildedTros.App;
 
-internal static class Program
+public static class Program
 {
     public static void Main(string[] args)
     {

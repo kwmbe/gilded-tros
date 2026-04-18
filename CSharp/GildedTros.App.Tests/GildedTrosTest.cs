@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Xunit;
+using GildedTros.App;
 
-namespace GildedTros.App;
+namespace GildedTros.App.Tests;
 
 public class GildedTrosTest
 {
