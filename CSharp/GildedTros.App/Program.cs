@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GildedTros.App;
+﻿namespace GildedTros.App;
 
 public static class Program
 {

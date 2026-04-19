@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Xunit;
-using GildedTros.App;
+﻿using Xunit;
 
 namespace GildedTros.App.Tests;
 
